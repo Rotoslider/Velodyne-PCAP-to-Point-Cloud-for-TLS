@@ -1,11 +1,11 @@
 %%   Dense  point  cloud  acquisition  with  a  low-cost  Velodyne  VLP-16
 %    Author : Jason Bula
-%    Under the supervision of : Grégoire Mariéthoz
+%    Under the supervision of : GrÃ©goire MariÃ©thoz
 %    University of Lausanne
 %    Modified to work as a stand alone App by Donny Mott
 
 %% Directory Management
-clear, close all
+%clear, close all dot not use clear when running a script from a app
 
 
 %#exclude settings.mat
@@ -120,7 +120,7 @@ end
 clear ptCloudIn2 ptCloudIn3 
 
 % Transformation of each image
-% Définition des matrices de transformation
+% DÃ©finition des matrices de transformation
 
 % Alignment correction as a function of motor speed (y-axis)
 VM = [cos(angle(i)) 0 sin(angle(i)) 0; 0 1 0 0; -sin( angle(i)) 0 ...
