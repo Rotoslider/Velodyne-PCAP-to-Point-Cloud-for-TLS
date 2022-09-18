@@ -1,11 +1,11 @@
 %%   Dense  point  cloud  acquisition  with  a  low-cost  Velodyne  VLP-16
 %    Author : Jason Bula
-%    Under the supervision of : GrÃ©goire MariÃ©thoz
+%    Under the supervision of : Grégoire Mariéthoz
 %    University of Lausanne
 %    Modified to work as a stand alone App by Donny Mott
 
 %% Directory Management
-%clear, close all dot not use clear when running a script from a app
+%clear, close all
 
 
 %#exclude settings.mat
@@ -16,7 +16,7 @@ input_file_name = input_file_name;
 disp(input_file_name)
 
 file = input_file_name;
-[filepath,~,~] = fileparts(file)
+[filepath,~,~] = fileparts(file);
 input = filepath;
 %disp(input)
 
@@ -120,7 +120,7 @@ end
 clear ptCloudIn2 ptCloudIn3 
 
 % Transformation of each image
-% DÃ©finition des matrices de transformation
+% Définition des matrices de transformation
 
 % Alignment correction as a function of motor speed (y-axis)
 VM = [cos(angle(i)) 0 sin(angle(i)) 0; 0 1 0 0; -sin( angle(i)) 0 ...
@@ -299,7 +299,7 @@ cd(input)
 ref = []; % suppression of the loaded point cloud
 %fprintf([output_file_name,'_', num2str(iiii) ' of 16\n']);
 f = msgbox((["Processed File:";output_file_name,'_', num2str(iiii) ' of 16\n']),"Status");
-pause(10)
+pause(2)
 if isvalid(f); delete(f); end
 end
 %%
