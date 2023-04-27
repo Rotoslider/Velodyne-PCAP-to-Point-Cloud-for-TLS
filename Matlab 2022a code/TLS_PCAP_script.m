@@ -1,15 +1,15 @@
-%%   Dense  point  cloud  acquisition  with  a  low-cost  Velodyne  VLP-16
+%%   Dense  point  cloud  acquisition  with  a  low-cost  Velodyne  Puck
 %    Author : Jason Bula
 %    Under the supervision of : Grégoire Mariéthoz
 %    University of Lausanne
-%    Modified to work as a stand alone App by Donny Mott
+%    Modified to work with the VLP-32C Ultra Puck and as a stand alone App by Donny Mott
 
 %% Directory Management
 %clear, close all
 
 
 %#exclude settings.mat
-load('C:\TLS_Pie\application\settings.mat')
+load('C:\TLS_Pie_V2\application\settings.mat')
 
 %input_file_name = uigetfile('*.pcap'); %browse to file
 input_file_name = input_file_name;
@@ -36,6 +36,7 @@ output_file_name = output_name;
 times = times; % Scan duration in tenths of a second (sec^-1) 
 angle = angle; % LiDAR rotation angle (-360 if cable is up)
 first = first; % Time at the first frame
+puck = puck; %version of lidar puck 'VLP16' or 'VLP32C'
 
 %% Export parameters
 % Set to 0 to keep all the points
@@ -76,7 +77,17 @@ theta3 = 0; %initial -05.5 /optional
 % 
 
 % Initialisation
-veloReader = velodyneFileReader(input_file_name,'VLP16'); 
+%veloReader = velodyneFileReader(input_file_name,'VLP16');
+%veloReader = velodyneFileReader(input_file_name,'VLP32C');
+if puck == 1
+
+veloReader = velodyneFileReader(input_file_name,'VLP16');
+
+else
+
+ veloReader = velodyneFileReader(input_file_name,"VLP32C");
+end
+
 last = first +times; % Time at the last frame
 angle_deg=(0:angle/times:angle); % Angle after each frame
 angle = deg2rad(angle_deg); % Angle in radian
@@ -169,14 +180,18 @@ end
 
 
 % Initialisation of export parameters
-if pos2 == 1
-    bandNumber = 16;
-else
-    bandNumber = 2;
+if pos2 == 1 & puck == 1
+    bandNumber = 16; %selects all VLP16 segments
 end
 
+if pos2 == 1 & puck == 2
+    bandNumber = 32; %selects all VLP32C segments
+end
+if pos2 == 0
+    bandNumber = 2; %selects first and last segment
+end
 if pos2 == 2
-    bandNumber = 1;
+    bandNumber = 1; %selects middle segment
 end
 
 %% Point cloud merging 
@@ -187,13 +202,23 @@ if pos2 == 1
     iiii=bande_sep;
 end
 
-if pos2 == 0    
+if pos2 == 0  & puck == 1  
     Bande_calibration = [1 16];
     iiii = Bande_calibration(bande_sep);
 end
 
-if pos2 == 2    
+if pos2 == 0  & puck == 2  
+    Bande_calibration = [1 32];
+    iiii = Bande_calibration(bande_sep);
+end
+
+if pos2 == 2  & puck == 1  
     Bande_calibration = 8;
+    iiii = Bande_calibration(bande_sep);
+end
+
+if pos2 == 2  & puck == 2  
+    Bande_calibration = 16;
     iiii = Bande_calibration(bande_sep);
 end
 
@@ -298,8 +323,12 @@ pcwrite(PC_Final1,filename,'PLYFormat','binary');
 cd(input)
 ref = []; % suppression of the loaded point cloud
 %fprintf([output_file_name,'_', num2str(iiii) ' of 16\n']);
+if puck == 1
 f = msgbox((["Processed File:";output_file_name,'_', num2str(iiii) ' of 16\n']),"Status");
-pause(2)
+else
+f = msgbox((["Processed File:";output_file_name,'_', num2str(iiii) ' of 32\n']),"Status");
+end
+pause(1)
 if isvalid(f); delete(f); end
 end
 %%
