@@ -1,6 +1,6 @@
 %%   Dense  point  cloud  acquisition  with  a  low-cost  Velodyne  Puck
 %    Author : Jason Bula
-%    Under the supervision of : Grégoire Mariéthoz
+%    Under the supervision of : GrÃ©goire MariÃ©thoz
 %    University of Lausanne
 %    Modified to work with the VLP-32C Ultra Puck and as a stand alone App by Donny Mott
 
@@ -9,7 +9,7 @@
 
 
 %#exclude settings.mat
-load('C:\TLS_Pie_V2\application\settings.mat')
+load('C:\TLS_Pie\application\settings.mat')
 
 %input_file_name = uigetfile('*.pcap'); %browse to file
 input_file_name = input_file_name;
@@ -131,7 +131,7 @@ end
 clear ptCloudIn2 ptCloudIn3 
 
 % Transformation of each image
-% Définition des matrices de transformation
+% DÃ©finition des matrices de transformation
 
 % Alignment correction as a function of motor speed (y-axis)
 VM = [cos(angle(i)) 0 sin(angle(i)) 0; 0 1 0 0; -sin( angle(i)) 0 ...
